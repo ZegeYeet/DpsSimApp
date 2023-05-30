@@ -1,4 +1,5 @@
 using DpsSimApp.Properties;
+using DpsSimulator;
 using System.Runtime.InteropServices;
 
 namespace DpsSimApp
@@ -21,6 +22,7 @@ namespace DpsSimApp
 
         Button currentButton;
         Dictionary<string, string[]> classSpecDict = new Dictionary<string, string[]>();
+        bool currentlySimming = false;
 
         public Form1()
         {
@@ -101,6 +103,23 @@ namespace DpsSimApp
             {
                 e.Handled = true;
             }
+        }
+
+        private void BeginSims(object sender, EventArgs e)
+        {
+            if (currentlySimming)
+            {
+                return;
+            }
+
+            currentlySimming = true;
+            SimuMain simuMain = new SimuMain();
+            CombatLogger simLog = new CombatLogger();
+            simuMain.RunSim(simLog);
+
+            basicDamageBreakDownLabel.Text = ($"Total damage: {(int)simLog.GetTotalDamage()}");
+
+            currentlySimming = false;
         }
     }
 }
