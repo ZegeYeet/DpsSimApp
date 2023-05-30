@@ -30,7 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            panel1 = new Panel();
+            leftNavPanel = new Panel();
             panelCurrentBtnBorder = new Panel();
             classBtnRanger = new Button();
             ClassBtnFrostMage = new Button();
@@ -40,24 +40,46 @@
             currentClassLabel = new Label();
             currentClassIcon = new PictureBox();
             classIconImageList = new ImageList(components);
-            panel1.SuspendLayout();
+            simSettingBackgroundPanel = new Panel();
+            targetCountTextBox = new TextBox();
+            fightDurationTextBox = new TextBox();
+            TargetCountLabel = new Label();
+            fightDurationLabel = new Label();
+            simResultsBackgroundPanel = new Panel();
+            button1 = new Button();
+            statsPanelBorder = new Panel();
+            statsPanel = new Panel();
+            WeaponDamageBox = new TextBox();
+            CritChanceBox = new TextBox();
+            brutalPowerBox = new TextBox();
+            hasteBox = new TextBox();
+            weaponDamageLabel = new Label();
+            brutalPowerLabel = new Label();
+            critChanceLabel = new Label();
+            hasteLabel = new Label();
+            basicDamageBreakDownLabel = new Label();
+            leftNavPanel.SuspendLayout();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)currentClassIcon).BeginInit();
+            simSettingBackgroundPanel.SuspendLayout();
+            simResultsBackgroundPanel.SuspendLayout();
+            statsPanelBorder.SuspendLayout();
+            statsPanel.SuspendLayout();
             SuspendLayout();
             // 
-            // panel1
+            // leftNavPanel
             // 
-            panel1.BackColor = Color.FromArgb(60, 60, 60);
-            panel1.Controls.Add(panelCurrentBtnBorder);
-            panel1.Controls.Add(classBtnRanger);
-            panel1.Controls.Add(ClassBtnFrostMage);
-            panel1.Controls.Add(classBtnJuggernaut);
-            panel1.Controls.Add(panel2);
-            panel1.Dock = DockStyle.Left;
-            panel1.Location = new Point(0, 0);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(200, 560);
-            panel1.TabIndex = 0;
+            leftNavPanel.BackColor = Color.FromArgb(60, 60, 60);
+            leftNavPanel.Controls.Add(panelCurrentBtnBorder);
+            leftNavPanel.Controls.Add(classBtnRanger);
+            leftNavPanel.Controls.Add(ClassBtnFrostMage);
+            leftNavPanel.Controls.Add(classBtnJuggernaut);
+            leftNavPanel.Controls.Add(panel2);
+            leftNavPanel.Dock = DockStyle.Left;
+            leftNavPanel.Location = new Point(0, 0);
+            leftNavPanel.Name = "leftNavPanel";
+            leftNavPanel.Size = new Size(200, 560);
+            leftNavPanel.TabIndex = 0;
             // 
             // panelCurrentBtnBorder
             // 
@@ -139,6 +161,7 @@
             specSelectComboBox.FormattingEnabled = true;
             specSelectComboBox.Items.AddRange(new object[] { "Dreadnought", "Weapon Master", "Battle Lord" });
             specSelectComboBox.Location = new Point(35, 108);
+            specSelectComboBox.MaxDropDownItems = 3;
             specSelectComboBox.Name = "specSelectComboBox";
             specSelectComboBox.Size = new Size(130, 23);
             specSelectComboBox.TabIndex = 2;
@@ -176,27 +199,229 @@
             classIconImageList.Images.SetKeyName(1, "enchanted crystal.png");
             classIconImageList.Images.SetKeyName(2, "emerald arrowhead icon.png");
             // 
+            // simSettingBackgroundPanel
+            // 
+            simSettingBackgroundPanel.BackColor = Color.FromArgb(86, 86, 86);
+            simSettingBackgroundPanel.Controls.Add(statsPanelBorder);
+            simSettingBackgroundPanel.Controls.Add(button1);
+            simSettingBackgroundPanel.Controls.Add(targetCountTextBox);
+            simSettingBackgroundPanel.Controls.Add(fightDurationTextBox);
+            simSettingBackgroundPanel.Controls.Add(TargetCountLabel);
+            simSettingBackgroundPanel.Controls.Add(fightDurationLabel);
+            simSettingBackgroundPanel.Location = new Point(200, 0);
+            simSettingBackgroundPanel.Name = "simSettingBackgroundPanel";
+            simSettingBackgroundPanel.Size = new Size(750, 210);
+            simSettingBackgroundPanel.TabIndex = 1;
+            // 
+            // targetCountTextBox
+            // 
+            targetCountTextBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            targetCountTextBox.Location = new Point(352, 171);
+            targetCountTextBox.Name = "targetCountTextBox";
+            targetCountTextBox.Size = new Size(100, 25);
+            targetCountTextBox.TabIndex = 1;
+            targetCountTextBox.Text = "1";
+            targetCountTextBox.KeyPress += TextBoxKeyPress;
+            // 
+            // fightDurationTextBox
+            // 
+            fightDurationTextBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            fightDurationTextBox.Location = new Point(175, 171);
+            fightDurationTextBox.Name = "fightDurationTextBox";
+            fightDurationTextBox.Size = new Size(100, 25);
+            fightDurationTextBox.TabIndex = 1;
+            fightDurationTextBox.Text = "300";
+            fightDurationTextBox.KeyPress += TextBoxKeyPress;
+            // 
+            // TargetCountLabel
+            // 
+            TargetCountLabel.AutoSize = true;
+            TargetCountLabel.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
+            TargetCountLabel.Location = new Point(290, 173);
+            TargetCountLabel.Name = "TargetCountLabel";
+            TargetCountLabel.Size = new Size(58, 18);
+            TargetCountLabel.TabIndex = 0;
+            TargetCountLabel.Text = "Targets";
+            // 
+            // fightDurationLabel
+            // 
+            fightDurationLabel.AutoSize = true;
+            fightDurationLabel.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
+            fightDurationLabel.Location = new Point(32, 173);
+            fightDurationLabel.Name = "fightDurationLabel";
+            fightDurationLabel.Size = new Size(137, 18);
+            fightDurationLabel.TabIndex = 0;
+            fightDurationLabel.Text = "Duration (Seconds)";
+            // 
+            // simResultsBackgroundPanel
+            // 
+            simResultsBackgroundPanel.BackColor = Color.FromArgb(86, 86, 86);
+            simResultsBackgroundPanel.Controls.Add(basicDamageBreakDownLabel);
+            simResultsBackgroundPanel.Location = new Point(200, 220);
+            simResultsBackgroundPanel.Name = "simResultsBackgroundPanel";
+            simResultsBackgroundPanel.Size = new Size(750, 340);
+            simResultsBackgroundPanel.TabIndex = 1;
+            // 
+            // button1
+            // 
+            button1.BackgroundImageLayout = ImageLayout.None;
+            button1.FlatAppearance.BorderSize = 2;
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
+            button1.ForeColor = Color.Black;
+            button1.Location = new Point(499, 161);
+            button1.Name = "button1";
+            button1.Size = new Size(200, 40);
+            button1.TabIndex = 2;
+            button1.Text = "Begin";
+            button1.TextImageRelation = TextImageRelation.TextBeforeImage;
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // statsPanelBorder
+            // 
+            statsPanelBorder.BackColor = Color.Black;
+            statsPanelBorder.Controls.Add(statsPanel);
+            statsPanelBorder.Location = new Point(10, 10);
+            statsPanelBorder.Name = "statsPanelBorder";
+            statsPanelBorder.Size = new Size(730, 144);
+            statsPanelBorder.TabIndex = 3;
+            // 
+            // statsPanel
+            // 
+            statsPanel.BackColor = Color.FromArgb(86, 86, 86);
+            statsPanel.Controls.Add(brutalPowerBox);
+            statsPanel.Controls.Add(hasteBox);
+            statsPanel.Controls.Add(CritChanceBox);
+            statsPanel.Controls.Add(WeaponDamageBox);
+            statsPanel.Controls.Add(hasteLabel);
+            statsPanel.Controls.Add(brutalPowerLabel);
+            statsPanel.Controls.Add(critChanceLabel);
+            statsPanel.Controls.Add(weaponDamageLabel);
+            statsPanel.Location = new Point(2, 2);
+            statsPanel.Name = "statsPanel";
+            statsPanel.Size = new Size(726, 140);
+            statsPanel.TabIndex = 0;
+            // 
+            // WeaponDamageBox
+            // 
+            WeaponDamageBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            WeaponDamageBox.Location = new Point(147, 19);
+            WeaponDamageBox.Name = "WeaponDamageBox";
+            WeaponDamageBox.Size = new Size(100, 25);
+            WeaponDamageBox.TabIndex = 1;
+            WeaponDamageBox.Text = "14";
+            WeaponDamageBox.KeyPress += TextBoxKeyPress;
+            // 
+            // CritChanceBox
+            // 
+            CritChanceBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            CritChanceBox.Location = new Point(357, 19);
+            CritChanceBox.Name = "CritChanceBox";
+            CritChanceBox.Size = new Size(100, 25);
+            CritChanceBox.TabIndex = 1;
+            CritChanceBox.Text = "0.01";
+            CritChanceBox.KeyPress += TextBoxKeyPress;
+            // 
+            // brutalPowerBox
+            // 
+            brutalPowerBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            brutalPowerBox.Location = new Point(147, 67);
+            brutalPowerBox.Name = "brutalPowerBox";
+            brutalPowerBox.Size = new Size(100, 25);
+            brutalPowerBox.TabIndex = 1;
+            brutalPowerBox.Text = "63.8";
+            brutalPowerBox.KeyPress += TextBoxKeyPress;
+            // 
+            // hasteBox
+            // 
+            hasteBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            hasteBox.Location = new Point(357, 67);
+            hasteBox.Name = "hasteBox";
+            hasteBox.Size = new Size(100, 25);
+            hasteBox.TabIndex = 1;
+            hasteBox.Text = "0";
+            hasteBox.KeyPress += TextBoxKeyPress;
+            // 
+            // weaponDamageLabel
+            // 
+            weaponDamageLabel.AutoSize = true;
+            weaponDamageLabel.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
+            weaponDamageLabel.Location = new Point(17, 21);
+            weaponDamageLabel.Name = "weaponDamageLabel";
+            weaponDamageLabel.Size = new Size(124, 18);
+            weaponDamageLabel.TabIndex = 0;
+            weaponDamageLabel.Text = "Weapon Damage";
+            // 
+            // brutalPowerLabel
+            // 
+            brutalPowerLabel.AutoSize = true;
+            brutalPowerLabel.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
+            brutalPowerLabel.Location = new Point(48, 69);
+            brutalPowerLabel.Name = "brutalPowerLabel";
+            brutalPowerLabel.Size = new Size(93, 18);
+            brutalPowerLabel.TabIndex = 0;
+            brutalPowerLabel.Text = "Brutal Power";
+            // 
+            // critChanceLabel
+            // 
+            critChanceLabel.AutoSize = true;
+            critChanceLabel.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
+            critChanceLabel.Location = new Point(265, 21);
+            critChanceLabel.Name = "critChanceLabel";
+            critChanceLabel.Size = new Size(86, 18);
+            critChanceLabel.TabIndex = 0;
+            critChanceLabel.Text = "Crit Chance";
+            // 
+            // hasteLabel
+            // 
+            hasteLabel.AutoSize = true;
+            hasteLabel.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
+            hasteLabel.Location = new Point(304, 69);
+            hasteLabel.Name = "hasteLabel";
+            hasteLabel.Size = new Size(47, 18);
+            hasteLabel.TabIndex = 0;
+            hasteLabel.Text = "Haste";
+            // 
+            // basicDamageBreakDownLabel
+            // 
+            basicDamageBreakDownLabel.AutoSize = true;
+            basicDamageBreakDownLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            basicDamageBreakDownLabel.Location = new Point(83, 46);
+            basicDamageBreakDownLabel.Name = "basicDamageBreakDownLabel";
+            basicDamageBreakDownLabel.Size = new Size(116, 38);
+            basicDamageBreakDownLabel.TabIndex = 0;
+            basicDamageBreakDownLabel.Text = "Total Damage: 73\r\nDPS: 20";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(45, 45, 45);
             ClientSize = new Size(950, 560);
-            Controls.Add(panel1);
+            Controls.Add(simResultsBackgroundPanel);
+            Controls.Add(simSettingBackgroundPanel);
+            Controls.Add(leftNavPanel);
             FormBorderStyle = FormBorderStyle.None;
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
-            panel1.ResumeLayout(false);
+            leftNavPanel.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)currentClassIcon).EndInit();
+            simSettingBackgroundPanel.ResumeLayout(false);
+            simSettingBackgroundPanel.PerformLayout();
+            simResultsBackgroundPanel.ResumeLayout(false);
+            simResultsBackgroundPanel.PerformLayout();
+            statsPanelBorder.ResumeLayout(false);
+            statsPanel.ResumeLayout(false);
+            statsPanel.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Panel panel1;
+        private Panel leftNavPanel;
         private Panel panel2;
         private PictureBox currentClassIcon;
         private Label currentClassLabel;
@@ -206,5 +431,23 @@
         private Button ClassBtnFrostMage;
         private Panel panelCurrentBtnBorder;
         private ImageList classIconImageList;
+        private Panel simSettingBackgroundPanel;
+        private Panel simResultsBackgroundPanel;
+        private TextBox fightDurationTextBox;
+        private Label fightDurationLabel;
+        private TextBox targetCountTextBox;
+        private Label TargetCountLabel;
+        private Button button1;
+        private Panel statsPanelBorder;
+        private Panel statsPanel;
+        private TextBox brutalPowerBox;
+        private TextBox hasteBox;
+        private TextBox CritChanceBox;
+        private TextBox WeaponDamageBox;
+        private Label hasteLabel;
+        private Label brutalPowerLabel;
+        private Label critChanceLabel;
+        private Label weaponDamageLabel;
+        private Label basicDamageBreakDownLabel;
     }
 }

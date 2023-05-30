@@ -20,22 +20,26 @@ namespace DpsSimApp
         );
 
         Button currentButton;
+        Dictionary<string, string[]> classSpecDict = new Dictionary<string, string[]>();
 
         public Form1()
         {
             Application.EnableVisualStyles();
             InitializeComponent();
+
+            SetUpClassSpecs();
+
             Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 25, 25));
             ClassButton_Click(classBtnJuggernaut, new EventArgs());
-            //SetClassButtonImageSizes();
         }
 
-        /*private void SetClassButtonImageSizes()
+        private void SetUpClassSpecs()
         {
-            classBtnJuggernaut.Image = (Image)(new Bitmap(classBtnJuggernaut.Image, new Size(35, 35)));
-            ClassBtnFrostMage.Image = (Image)(new Bitmap(ClassBtnFrostMage.Image, new Size(35, 35)));
-            classBtnRanger.Image = (Image)(new Bitmap(classBtnRanger.Image, new Size(35, 35)));
-        }*/
+            classSpecDict.Add("Juggernaut", new string[] { "Dreadnought", "Weapon Master", "Battle Lord" });
+            classSpecDict.Add("Frost Mage", new string[] { "Hypothermic", "Absolute Zero", "Glacier" });
+            classSpecDict.Add("Ranger", new string[] { "Marksman", "Artillery", "Archery" });
+        }
+
 
         private void ClassButton_Click(object sender, EventArgs e)
         {
@@ -47,10 +51,22 @@ namespace DpsSimApp
             panelCurrentBtnBorder.Left = currentButton.Left;
             currentButton.BackColor = Color.FromArgb(168, 168, 168);
 
-            specSelectComboBox.SelectedIndex = 0;
+            UpdateSpecsFromButton(currentButton);
+            currentClassLabel.Text = currentButton.Text;
+            currentClassLabel.ForeColor = currentButton.ForeColor;
             currentClassIcon.Image = currentButton.BackgroundImage;
         }
 
+        void UpdateSpecsFromButton(Button classButton)
+        {
+            specSelectComboBox.Items.Clear();
+            foreach (string specialization in classSpecDict[classButton.Text])
+            {
+                specSelectComboBox.Items.Add(specialization);
+            }
+
+            specSelectComboBox.SelectedIndex = 0;
+        }
 
         private void ButtonLeave(Button leftBtn)
         {
@@ -61,11 +77,30 @@ namespace DpsSimApp
         }
 
 
+        //used for loading dif spec api/abilities/talents
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
 
+        private void TextBoxKeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
 
+            // only allow one decimal point
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+
+            //no decimal in target count
+            if ((sender as TextBox).Name == "targetCountTextBox" && (e.KeyChar == '.'))
+            {
+                e.Handled = true;
+            }
+        }
     }
 }
