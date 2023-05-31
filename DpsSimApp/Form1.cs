@@ -1,6 +1,7 @@
 using DpsSimApp.Properties;
 using DpsSimulator;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace DpsSimApp
 {
@@ -112,14 +113,31 @@ namespace DpsSimApp
                 return;
             }
 
-            currentlySimming = true;
-            SimuMain simuMain = new SimuMain();
-            CombatLogger simLog = new CombatLogger();
-            simuMain.RunSim(simLog);
+            float fightDuration;
+            if (float.TryParse(fightDurationTextBox.Text, out fightDuration))
+            {
+                currentlySimming = true;
+                SimuMain simuMain = new SimuMain();
+                CombatLogger simLog = new CombatLogger();
+                simuMain.RunSim(simLog, fightDuration);
 
-            basicDamageBreakDownLabel.Text = ($"Total damage: {(int)simLog.GetTotalDamage()}");
+                totalDamageLabel.Text = ($"Total damage: {(int)simLog.GetTotalDamage()}");
+                dpsLabel.Text = ($"DPS: {MathF.Round((int)simLog.GetTotalDamage() / fightDuration, 2)}");
+                StringBuilder abilityDamagesString = new StringBuilder();
+                foreach (KeyValuePair<string, AbilityResults> ability in simLog.GetAbilityDamages())
+                {
+                    abilityDamagesString.Append($"{ability.Key} : {(int)ability.Value.totalAbilityDamage} ({MathF.Round((ability.Value.totalAbilityDamage / simLog.GetTotalDamage()) * 100, 2)}%)\n");
+                }
+                damageOverviewLabel.Text = abilityDamagesString.ToString();
 
-            currentlySimming = false;
+                currentlySimming = false;
+            }
+            else
+            {
+                currentlySimming = false;
+            }
+
+
         }
     }
 }
