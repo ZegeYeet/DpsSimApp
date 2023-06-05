@@ -57,11 +57,11 @@
             TargetCountLabel = new Label();
             fightDurationLabel = new Label();
             simResultsBackgroundPanel = new Panel();
-            totalDamageLabel = new Label();
             generalResultsOutlinePanel = new Panel();
             panel1 = new Panel();
+            AbilityBarsOverviewPanel = new Panel();
             dpsLabel = new Label();
-            damageOverviewLabel = new Label();
+            totalDamageLabel = new Label();
             leftNavPanel.SuspendLayout();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)currentClassIcon).BeginInit();
@@ -389,16 +389,6 @@
             simResultsBackgroundPanel.Size = new Size(750, 340);
             simResultsBackgroundPanel.TabIndex = 1;
             // 
-            // totalDamageLabel
-            // 
-            totalDamageLabel.AutoSize = true;
-            totalDamageLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            totalDamageLabel.Location = new Point(20, 20);
-            totalDamageLabel.Name = "totalDamageLabel";
-            totalDamageLabel.Size = new Size(116, 19);
-            totalDamageLabel.TabIndex = 0;
-            totalDamageLabel.Text = "Total Damage: 73";
-            // 
             // generalResultsOutlinePanel
             // 
             generalResultsOutlinePanel.BackColor = Color.Black;
@@ -411,7 +401,7 @@
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(86, 86, 86);
-            panel1.Controls.Add(damageOverviewLabel);
+            panel1.Controls.Add(AbilityBarsOverviewPanel);
             panel1.Controls.Add(dpsLabel);
             panel1.Controls.Add(totalDamageLabel);
             panel1.Location = new Point(2, 2);
@@ -419,24 +409,34 @@
             panel1.Size = new Size(296, 316);
             panel1.TabIndex = 0;
             // 
+            // AbilityBarsOverviewPanel
+            // 
+            AbilityBarsOverviewPanel.Location = new Point(3, 53);
+            AbilityBarsOverviewPanel.Margin = new Padding(0);
+            AbilityBarsOverviewPanel.Name = "AbilityBarsOverviewPanel";
+            AbilityBarsOverviewPanel.Size = new Size(290, 260);
+            AbilityBarsOverviewPanel.TabIndex = 2;
+            // 
             // dpsLabel
             // 
             dpsLabel.AutoSize = true;
             dpsLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            dpsLabel.Location = new Point(20, 44);
+            dpsLabel.Location = new Point(20, 30);
+            dpsLabel.Margin = new Padding(3);
             dpsLabel.Name = "dpsLabel";
             dpsLabel.Size = new Size(41, 19);
             dpsLabel.TabIndex = 1;
             dpsLabel.Text = "DPS: ";
             // 
-            // damageOverviewLabel
+            // totalDamageLabel
             // 
-            damageOverviewLabel.AutoSize = true;
-            damageOverviewLabel.Location = new Point(20, 68);
-            damageOverviewLabel.Name = "damageOverviewLabel";
-            damageOverviewLabel.Size = new Size(97, 45);
-            damageOverviewLabel.TabIndex = 1;
-            damageOverviewLabel.Text = "abi 1 = 123 (5%)\r\nabi 2 = 235 (12%)\r\nabi 3 = 274 (34%)";
+            totalDamageLabel.AutoSize = true;
+            totalDamageLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            totalDamageLabel.Location = new Point(17, 10);
+            totalDamageLabel.Name = "totalDamageLabel";
+            totalDamageLabel.Size = new Size(116, 19);
+            totalDamageLabel.TabIndex = 0;
+            totalDamageLabel.Text = "Total Damage: 73";
             // 
             // Form1
             // 
@@ -499,7 +499,7 @@
         private Label totalDamageLabel;
         private Panel generalResultsOutlinePanel;
         private Panel panel1;
-        private Label damageOverviewLabel;
         private Label dpsLabel;
+        private Panel AbilityBarsOverviewPanel;
     }
 }

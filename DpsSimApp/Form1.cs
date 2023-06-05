@@ -2,6 +2,8 @@ using DpsSimApp.Properties;
 using DpsSimulator;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace DpsSimApp
 {
@@ -24,6 +26,7 @@ namespace DpsSimApp
         Button currentButton;
         Dictionary<string, string[]> classSpecDict = new Dictionary<string, string[]>();
         bool currentlySimming = false;
+        List<Panel> abiBarList = new List<Panel>();
 
         public Form1()
         {
@@ -123,12 +126,20 @@ namespace DpsSimApp
 
                 totalDamageLabel.Text = ($"Total damage: {(int)simLog.GetTotalDamage()}");
                 dpsLabel.Text = ($"DPS: {MathF.Round((int)simLog.GetTotalDamage() / fightDuration, 2)}");
-                StringBuilder abilityDamagesString = new StringBuilder();
-                foreach (KeyValuePair<string, AbilityResults> ability in simLog.GetAbilityDamages())
+
+
+                foreach (var abiBar in abiBarList)
                 {
-                    abilityDamagesString.Append($"{ability.Key} : {(int)ability.Value.totalAbilityDamage} ({MathF.Round((ability.Value.totalAbilityDamage / simLog.GetTotalDamage()) * 100, 2)}%)\n");
+                    abiBar.Dispose();
                 }
-                damageOverviewLabel.Text = abilityDamagesString.ToString();
+                abiBarList = new List<Panel>();
+                List<KeyValuePair<string, AbilityResults>> sortedResults = simLog.GetAbilityDamages().ToList();
+                sortedResults.Sort((pair1, pair2) => pair1.Value.totalAbilityDamage.CompareTo(pair2.Value.totalAbilityDamage));
+                foreach (KeyValuePair<string, AbilityResults> ability in sortedResults)
+                {
+                    CreateAbilityBar(ability.Key, ability.Value, simLog);
+                }
+
 
                 currentlySimming = false;
             }
@@ -138,6 +149,54 @@ namespace DpsSimApp
             }
 
 
+        }
+
+        private void CreateAbilityBar(string abilityName, AbilityResults currentAbiResults, CombatLogger simLog)
+        {
+
+            Panel abiBar = new Panel();
+            abiBar.Height = 24;
+            abiBar.Dock = DockStyle.Top;
+            abiBar.BackColor = Color.FromArgb(60, 60, 60);
+            abiBar.BorderStyle = BorderStyle.None;
+            abiBar.Padding = new Padding(2, 2, 2, 2);
+
+            Label abiNameLabel = new Label();
+            abiNameLabel.TextAlign = ContentAlignment.MiddleLeft;
+            abiNameLabel.AutoSize = true;
+            abiNameLabel.Dock = DockStyle.Left;
+            abiNameLabel.Text = abilityName;
+            abiNameLabel.Font = new Font("Segoe UI", 10);
+            Label abiDmgLabel = new Label();
+            abiDmgLabel.TextAlign = ContentAlignment.MiddleRight;
+            abiDmgLabel.AutoSize = true;
+            abiDmgLabel.Dock = DockStyle.Right;
+            abiDmgLabel.Text = ($"{(int)currentAbiResults.totalAbilityDamage} ({MathF.Round((currentAbiResults.totalAbilityDamage / simLog.GetTotalDamage()) * 100, 2)}%)\n");
+            abiDmgLabel.Font = new Font("Segoe UI", 10);
+
+            abiBar.MouseEnter += new System.EventHandler(EnterAbiBar);
+            abiBar.MouseLeave += new System.EventHandler(LeaveAbiBar);
+
+            abiBar.Controls.Add(abiNameLabel);
+            abiBar.Controls.Add(abiDmgLabel);
+            AbilityBarsOverviewPanel.Controls.Add(abiBar);
+            abiBarList.Add(abiBar);
+
+        }
+
+        private void EnterAbiBar(object sender, EventArgs e)
+        {
+            (sender as Panel).BackColor = Color.FromArgb(55, 55, 55);
+        }
+        private void LeaveAbiBar(object sender, EventArgs e)
+        {
+            (sender as Panel).BackColor = Color.FromArgb(60, 60, 60);
+        }
+
+        //used for bringing up ability details
+        private void ClickAbiBar(Object sender, EventArgs e) 
+        { 
+            
         }
     }
 }
