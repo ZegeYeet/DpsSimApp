@@ -138,6 +138,7 @@ namespace DpsSimApp
                 foreach (KeyValuePair<string, AbilityResults> ability in sortedResults)
                 {
                     CreateAbilityBar(ability.Key, ability.Value, simLog);
+                    
                 }
 
 
@@ -154,33 +155,11 @@ namespace DpsSimApp
         private void CreateAbilityBar(string abilityName, AbilityResults currentAbiResults, CombatLogger simLog)
         {
 
-            Panel abiBar = new Panel();
-            abiBar.Height = 24;
-            abiBar.Dock = DockStyle.Top;
-            abiBar.BackColor = Color.FromArgb(60, 60, 60);
-            abiBar.BorderStyle = BorderStyle.None;
-            abiBar.Padding = new Padding(2, 2, 2, 2);
-
-            Label abiNameLabel = new Label();
-            abiNameLabel.TextAlign = ContentAlignment.MiddleLeft;
-            abiNameLabel.AutoSize = true;
-            abiNameLabel.Dock = DockStyle.Left;
-            abiNameLabel.Text = abilityName;
-            abiNameLabel.Font = new Font("Segoe UI", 10);
-            Label abiDmgLabel = new Label();
-            abiDmgLabel.TextAlign = ContentAlignment.MiddleRight;
-            abiDmgLabel.AutoSize = true;
-            abiDmgLabel.Dock = DockStyle.Right;
-            abiDmgLabel.Text = ($"{(int)currentAbiResults.totalAbilityDamage} ({MathF.Round((currentAbiResults.totalAbilityDamage / simLog.GetTotalDamage()) * 100, 2)}%)\n");
-            abiDmgLabel.Font = new Font("Segoe UI", 10);
-
-            abiBar.MouseEnter += new System.EventHandler(EnterAbiBar);
-            abiBar.MouseLeave += new System.EventHandler(LeaveAbiBar);
-
-            abiBar.Controls.Add(abiNameLabel);
-            abiBar.Controls.Add(abiDmgLabel);
-            AbilityBarsOverviewPanel.Controls.Add(abiBar);
-            abiBarList.Add(abiBar);
+            AbilityBar abiBar = new AbilityBar(abilityName, currentAbiResults, simLog);
+            abiBar.abiPanel.MouseEnter += new System.EventHandler(EnterAbiBar);
+            abiBar.abiPanel.MouseLeave += new System.EventHandler(LeaveAbiBar);
+            AbilityBarsOverviewPanel.Controls.Add(abiBar.abiPanel);
+            abiBarList.Add(abiBar.abiPanel);
 
         }
 
