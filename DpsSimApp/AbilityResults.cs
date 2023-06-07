@@ -18,10 +18,11 @@ namespace DpsSimulator
             abilityName = newName;
             totalAbilityDamage = newDamage;
             abilityHits = 1;
+            abilityCrits = 0;
             if (isCrit)
             {
                 totalCritDamage = newDamage;
-                abilityCrits = 1;
+                abilityCrits++;
             }
         }
 

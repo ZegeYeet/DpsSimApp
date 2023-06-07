@@ -7,29 +7,29 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace DpsSimApp
 {
-    class AbilityBar
+    class AbilityBar : Panel
     {
         public AbilityResults barAbiResults {get; set;}
-        public Panel abiPanel { get; set; }
+        public Label abiNameLabel { get; set; }
+        public Label abiDmgLabel { get; set; }
 
         public AbilityBar(string abilityName, AbilityResults newAbiResults, CombatLogger simLog) 
 		{
             barAbiResults = newAbiResults;
-            abiPanel = new Panel();
 
-            abiPanel.Height = 24;
-            abiPanel.Dock = DockStyle.Top;
-            abiPanel.BackColor = Color.FromArgb(60, 60, 60);
-            abiPanel.BorderStyle = BorderStyle.None;
-            abiPanel.Padding = new Padding(2, 2, 2, 2);
+            this.Height = 24;
+            this.Dock = DockStyle.Top;
+            this.BackColor = Color.FromArgb(60, 60, 60);
+            this.BorderStyle = BorderStyle.None;
+            this.Padding = new Padding(2, 2, 2, 2);
 
-            Label abiNameLabel = new Label();
+            abiNameLabel = new Label();
             abiNameLabel.TextAlign = ContentAlignment.MiddleLeft;
             abiNameLabel.AutoSize = true;
             abiNameLabel.Dock = DockStyle.Left;
             abiNameLabel.Text = abilityName;
             abiNameLabel.Font = new Font("Segoe UI", 10);
-            Label abiDmgLabel = new Label();
+            abiDmgLabel = new Label();
             abiDmgLabel.TextAlign = ContentAlignment.MiddleRight;
             abiDmgLabel.AutoSize = true;
             abiDmgLabel.Dock = DockStyle.Right;
@@ -38,8 +38,10 @@ namespace DpsSimApp
 
             
 
-            abiPanel.Controls.Add(abiNameLabel);
-            abiPanel.Controls.Add(abiDmgLabel);
+            this.Controls.Add(abiNameLabel);
+            this.Controls.Add(abiDmgLabel);
         }
+
+
 	}
 }

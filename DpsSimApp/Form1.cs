@@ -138,7 +138,7 @@ namespace DpsSimApp
                 foreach (KeyValuePair<string, AbilityResults> ability in sortedResults)
                 {
                     CreateAbilityBar(ability.Key, ability.Value, simLog);
-                    
+
                 }
 
 
@@ -156,10 +156,17 @@ namespace DpsSimApp
         {
 
             AbilityBar abiBar = new AbilityBar(abilityName, currentAbiResults, simLog);
-            abiBar.abiPanel.MouseEnter += new System.EventHandler(EnterAbiBar);
-            abiBar.abiPanel.MouseLeave += new System.EventHandler(LeaveAbiBar);
-            AbilityBarsOverviewPanel.Controls.Add(abiBar.abiPanel);
-            abiBarList.Add(abiBar.abiPanel);
+            abiBar.MouseEnter += new System.EventHandler(EnterAbiBar);
+            abiBar.MouseLeave += new System.EventHandler(LeaveAbiBar);
+            abiBar.Click += new System.EventHandler(ClickAbiBar);
+            abiBar.abiNameLabel.Click += new System.EventHandler(ClickAbiLabel);
+            abiBar.abiNameLabel.MouseEnter += new System.EventHandler(EnterAbiLabel);
+            abiBar.abiNameLabel.MouseLeave += new System.EventHandler(LeaveAbiLabel);
+            abiBar.abiDmgLabel.Click += new System.EventHandler(ClickAbiLabel);
+            abiBar.abiDmgLabel.MouseEnter += new System.EventHandler(EnterAbiLabel);
+            abiBar.abiDmgLabel.MouseLeave += new System.EventHandler(LeaveAbiLabel);
+            AbilityBarsOverviewPanel.Controls.Add(abiBar);
+            abiBarList.Add(abiBar);
 
         }
 
@@ -172,10 +179,33 @@ namespace DpsSimApp
             (sender as Panel).BackColor = Color.FromArgb(60, 60, 60);
         }
 
-        //used for bringing up ability details
-        private void ClickAbiBar(Object sender, EventArgs e) 
-        { 
-            
+        private void EnterAbiLabel(object sender, EventArgs e)
+        {
+            EnterAbiBar((sender as Label).Parent, null);
         }
+        private void LeaveAbiLabel(object sender, EventArgs e)
+        {
+            LeaveAbiBar((sender as Label).Parent, null);
+        }
+
+
+        //used for bringing up ability details
+        private void ClickAbiBar(Object sender, EventArgs e)
+        {
+
+            AbilityResults currentResults = (sender as AbilityBar).barAbiResults;
+            
+
+            detailsLabel.Text = ($"Ability: {currentResults.abilityName}\n" +
+                $"Total Damage: {(int)currentResults.totalAbilityDamage}\n" +
+                $"Total Hits: {currentResults.abilityHits}\n" +
+                $"Crit Chance: {MathF.Round(((float)currentResults.abilityCrits / (float)currentResults.abilityHits)*100f, 2)}%\n");
+        }
+        private void ClickAbiLabel(Object sender, EventArgs e)
+        {
+            ClickAbiBar((sender as Label).Parent, null);
+        }
+
+
     }
 }
