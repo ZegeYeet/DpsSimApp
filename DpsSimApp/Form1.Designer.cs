@@ -65,6 +65,7 @@
             AbilityBarsOverviewPanel = new Panel();
             dpsLabel = new Label();
             totalDamageLabel = new Label();
+            simBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             leftNavPanel.SuspendLayout();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)currentClassIcon).BeginInit();
@@ -472,6 +473,13 @@
             totalDamageLabel.TabIndex = 0;
             totalDamageLabel.Text = "Total Damage: ";
             // 
+            // simBackgroundWorker
+            // 
+            simBackgroundWorker.WorkerReportsProgress = true;
+            simBackgroundWorker.DoWork += simBackgroundWorker_DoWork;
+            simBackgroundWorker.ProgressChanged += simBackgroundWorker_ProgressChanged;
+            simBackgroundWorker.RunWorkerCompleted += simBackgroundWorker_RunWorkerCompleted;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -541,5 +549,6 @@
         private Panel detailsBorderPanel;
         private Panel detailsBackgroundPanel;
         private Label detailsLabel;
+        private System.ComponentModel.BackgroundWorker simBackgroundWorker;
     }
 }

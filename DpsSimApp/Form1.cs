@@ -1,5 +1,6 @@
 using DpsSimApp.Properties;
 using DpsSimulator;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -28,6 +29,8 @@ namespace DpsSimApp
         Dictionary<string, string[]> classSpecDict = new Dictionary<string, string[]>();
         bool currentlySimming = false;
         List<Panel> abiBarList = new List<Panel>();
+        SimStruct simStruct = new SimStruct();
+
 
         public Form1()
         {
@@ -119,56 +122,81 @@ namespace DpsSimApp
             totalDamageLabel.Text = $"CURRENTLY SIMMING";
             dpsLabel.Text = $"CURRENTLY SIMMING";
 
-            float fightDuration;
-            int simCount;
-            if (float.TryParse(fightDurationTextBox.Text, out fightDuration))
+            
+            if (float.TryParse(fightDurationTextBox.Text, out simStruct.fightDuration))
             {
-                if (!int.TryParse(simCountTextBox.Text, out simCount))
+                if (!int.TryParse(simCountTextBox.Text, out simStruct.simCount))
                 {
                     return;
                 }
 
                 currentlySimming = true;
-                
 
-                SimuMain simuMain = new SimuMain();
-                CombatLogger simLog = new CombatLogger();
-                for (int i = 0; i < simCount; i++)
-                {
-                    simuMain.RunSim(simLog, fightDuration);
-                }
-
-
-                totalDamageLabel.Text = ($"Total damage: {(int)simLog.GetTotalDamage()}");
-                dpsLabel.Text = ($"DPS: {MathF.Round((int)simLog.GetTotalDamage() / fightDuration, 2)}");
-
-
+                this.simBackgroundWorker.RunWorkerAsync(simStruct);
+            }
+            else
+            {
+                totalDamageLabel.Text = $"Incorrect fight duration or sim count";
+                dpsLabel.Text = $"";
                 foreach (var abiBar in abiBarList)
                 {
                     abiBar.Dispose();
                 }
-                abiBarList = new List<Panel>();
-                List<KeyValuePair<string, AbilityResults>> sortedResults = simLog.GetAbilityDamages().ToList();
-                sortedResults.Sort((pair1, pair2) => pair1.Value.totalAbilityDamage.CompareTo(pair2.Value.totalAbilityDamage));
-                foreach (KeyValuePair<string, AbilityResults> ability in sortedResults)
-                {
-                    ability.Value.AverageResults(simCount);
-                    CreateAbilityBar(ability.Key, ability.Value, simLog);
-
-                }
-
-
-                currentlySimming = false;
-            }
-            else
-            {
-                totalDamageLabel.Text = $"Total Damage:";
-                dpsLabel.Text = $"DPS:";
                 currentlySimming = false;
             }
 
 
         }
+
+        private void SimBackgroundWork(BackgroundWorker bw, SimStruct bwSimStruct)
+        {
+            for (int i = 0; i < bwSimStruct.simCount; i++)
+            {
+                bwSimStruct.simuMain.RunSim(bwSimStruct.simLog, bwSimStruct.fightDuration);
+            }
+
+        }
+
+        private void simBackgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            BackgroundWorker sbw = sender as BackgroundWorker;
+            SimStruct bwSimStruct = (SimStruct)e.Argument;
+            SimBackgroundWork(sbw, bwSimStruct);
+
+
+            e.Result = bwSimStruct;
+        }
+
+        private void simBackgroundWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            SimStruct bwSimStruct = (SimStruct)e.Result;
+
+            totalDamageLabel.Text = ($"Total damage: {(int)bwSimStruct.simLog.GetTotalDamage()/ bwSimStruct.simCount}");
+            dpsLabel.Text = ($"DPS: {MathF.Round((int)((bwSimStruct.simLog.GetTotalDamage() / bwSimStruct.fightDuration)/ bwSimStruct.simCount), 2)}");
+
+
+            foreach (var abiBar in abiBarList)
+            {
+                abiBar.Dispose();
+            }
+            abiBarList = new List<Panel>();
+            List<KeyValuePair<string, AbilityResults>> sortedResults = bwSimStruct.simLog.GetAbilityDamages().ToList();
+            sortedResults.Sort((pair1, pair2) => pair1.Value.totalAbilityDamage.CompareTo(pair2.Value.totalAbilityDamage));
+            foreach (KeyValuePair<string, AbilityResults> ability in sortedResults)
+            {
+                ability.Value.AverageResults(bwSimStruct.simCount);
+                CreateAbilityBar(ability.Key, ability.Value, bwSimStruct.simLog);
+            }
+
+
+            currentlySimming = false;
+        }
+
+        private void simBackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+
+        }
+
 
         private void CreateAbilityBar(string abilityName, AbilityResults currentAbiResults, CombatLogger simLog)
         {
@@ -224,6 +252,23 @@ namespace DpsSimApp
             ClickAbiBar((sender as Label).Parent, null);
         }
 
+
+    }
+
+    struct SimStruct
+    {
+
+        public SimuMain simuMain;
+        public CombatLogger simLog;
+        public float fightDuration;
+        public int simCount;
+        public SimStruct()
+        {
+            simuMain = new SimuMain();
+            simLog = new CombatLogger();
+            fightDuration = 1;
+            simCount = 1;
+        }
 
     }
 }
