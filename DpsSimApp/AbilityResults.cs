@@ -37,6 +37,21 @@ namespace DpsSimulator
             }
         }
 
+        public void MergeResults(AbilityResults resultsToAdd)
+        {
+            totalAbilityDamage += resultsToAdd.totalAbilityDamage;
+            totalCritDamage += resultsToAdd.totalCritDamage;
+            abilityHits += resultsToAdd.abilityHits;
+            abilityCrits += resultsToAdd.abilityCrits;
+        }
+
+        public void AverageResults(int avgAmount)
+        {
+            totalAbilityDamage = totalAbilityDamage / avgAmount;
+            totalCritDamage = totalCritDamage / avgAmount;
+            abilityHits = abilityHits / avgAmount;
+            abilityCrits = abilityCrits / avgAmount;
+        }
 
     }
 }

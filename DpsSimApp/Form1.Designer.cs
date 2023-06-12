@@ -52,19 +52,19 @@
             critChanceLabel = new Label();
             weaponDamageLabel = new Label();
             button1 = new Button();
-            targetCountTextBox = new TextBox();
+            simCountTextBox = new TextBox();
             fightDurationTextBox = new TextBox();
-            TargetCountLabel = new Label();
+            simCountLabel = new Label();
             fightDurationLabel = new Label();
             simResultsBackgroundPanel = new Panel();
+            detailsBorderPanel = new Panel();
+            detailsBackgroundPanel = new Panel();
+            detailsLabel = new Label();
             generalResultsOutlinePanel = new Panel();
             panel1 = new Panel();
             AbilityBarsOverviewPanel = new Panel();
             dpsLabel = new Label();
             totalDamageLabel = new Label();
-            detailsBorderPanel = new Panel();
-            detailsBackgroundPanel = new Panel();
-            detailsLabel = new Label();
             leftNavPanel.SuspendLayout();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)currentClassIcon).BeginInit();
@@ -72,10 +72,10 @@
             statsPanelBorder.SuspendLayout();
             statsPanel.SuspendLayout();
             simResultsBackgroundPanel.SuspendLayout();
-            generalResultsOutlinePanel.SuspendLayout();
-            panel1.SuspendLayout();
             detailsBorderPanel.SuspendLayout();
             detailsBackgroundPanel.SuspendLayout();
+            generalResultsOutlinePanel.SuspendLayout();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // leftNavPanel
@@ -215,9 +215,9 @@
             simSettingBackgroundPanel.BackColor = Color.FromArgb(86, 86, 86);
             simSettingBackgroundPanel.Controls.Add(statsPanelBorder);
             simSettingBackgroundPanel.Controls.Add(button1);
-            simSettingBackgroundPanel.Controls.Add(targetCountTextBox);
+            simSettingBackgroundPanel.Controls.Add(simCountTextBox);
             simSettingBackgroundPanel.Controls.Add(fightDurationTextBox);
-            simSettingBackgroundPanel.Controls.Add(TargetCountLabel);
+            simSettingBackgroundPanel.Controls.Add(simCountLabel);
             simSettingBackgroundPanel.Controls.Add(fightDurationLabel);
             simSettingBackgroundPanel.Location = new Point(200, 0);
             simSettingBackgroundPanel.Name = "simSettingBackgroundPanel";
@@ -345,15 +345,15 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += BeginSims;
             // 
-            // targetCountTextBox
+            // simCountTextBox
             // 
-            targetCountTextBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            targetCountTextBox.Location = new Point(352, 171);
-            targetCountTextBox.Name = "targetCountTextBox";
-            targetCountTextBox.Size = new Size(100, 25);
-            targetCountTextBox.TabIndex = 1;
-            targetCountTextBox.Text = "1";
-            targetCountTextBox.KeyPress += TextBoxKeyPress;
+            simCountTextBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            simCountTextBox.Location = new Point(369, 171);
+            simCountTextBox.Name = "simCountTextBox";
+            simCountTextBox.Size = new Size(100, 25);
+            simCountTextBox.TabIndex = 1;
+            simCountTextBox.Text = "1000";
+            simCountTextBox.KeyPress += TextBoxKeyPress;
             // 
             // fightDurationTextBox
             // 
@@ -365,15 +365,15 @@
             fightDurationTextBox.Text = "300";
             fightDurationTextBox.KeyPress += TextBoxKeyPress;
             // 
-            // TargetCountLabel
+            // simCountLabel
             // 
-            TargetCountLabel.AutoSize = true;
-            TargetCountLabel.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            TargetCountLabel.Location = new Point(290, 173);
-            TargetCountLabel.Name = "TargetCountLabel";
-            TargetCountLabel.Size = new Size(58, 18);
-            TargetCountLabel.TabIndex = 0;
-            TargetCountLabel.Text = "Targets";
+            simCountLabel.AutoSize = true;
+            simCountLabel.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
+            simCountLabel.Location = new Point(290, 173);
+            simCountLabel.Name = "simCountLabel";
+            simCountLabel.Size = new Size(78, 18);
+            simCountLabel.TabIndex = 0;
+            simCountLabel.Text = "Sim Count";
             // 
             // fightDurationLabel
             // 
@@ -394,6 +394,34 @@
             simResultsBackgroundPanel.Name = "simResultsBackgroundPanel";
             simResultsBackgroundPanel.Size = new Size(750, 340);
             simResultsBackgroundPanel.TabIndex = 1;
+            // 
+            // detailsBorderPanel
+            // 
+            detailsBorderPanel.BackColor = Color.Black;
+            detailsBorderPanel.Controls.Add(detailsBackgroundPanel);
+            detailsBorderPanel.Location = new Point(316, 10);
+            detailsBorderPanel.Name = "detailsBorderPanel";
+            detailsBorderPanel.Size = new Size(422, 320);
+            detailsBorderPanel.TabIndex = 1;
+            // 
+            // detailsBackgroundPanel
+            // 
+            detailsBackgroundPanel.BackColor = Color.FromArgb(86, 86, 86);
+            detailsBackgroundPanel.Controls.Add(detailsLabel);
+            detailsBackgroundPanel.Location = new Point(2, 2);
+            detailsBackgroundPanel.Name = "detailsBackgroundPanel";
+            detailsBackgroundPanel.Size = new Size(418, 316);
+            detailsBackgroundPanel.TabIndex = 0;
+            // 
+            // detailsLabel
+            // 
+            detailsLabel.AutoSize = true;
+            detailsLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            detailsLabel.Location = new Point(17, 10);
+            detailsLabel.Name = "detailsLabel";
+            detailsLabel.Size = new Size(100, 76);
+            detailsLabel.TabIndex = 0;
+            detailsLabel.Text = "Ability: \r\nTotal Damage: \r\nTotal Hits: \r\nCrit Chance: ";
             // 
             // generalResultsOutlinePanel
             // 
@@ -427,7 +455,7 @@
             // 
             dpsLabel.AutoSize = true;
             dpsLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            dpsLabel.Location = new Point(20, 30);
+            dpsLabel.Location = new Point(17, 31);
             dpsLabel.Margin = new Padding(3);
             dpsLabel.Name = "dpsLabel";
             dpsLabel.Size = new Size(41, 19);
@@ -443,34 +471,6 @@
             totalDamageLabel.Size = new Size(100, 19);
             totalDamageLabel.TabIndex = 0;
             totalDamageLabel.Text = "Total Damage: ";
-            // 
-            // detailsBorderPanel
-            // 
-            detailsBorderPanel.BackColor = Color.Black;
-            detailsBorderPanel.Controls.Add(detailsBackgroundPanel);
-            detailsBorderPanel.Location = new Point(316, 10);
-            detailsBorderPanel.Name = "detailsBorderPanel";
-            detailsBorderPanel.Size = new Size(422, 320);
-            detailsBorderPanel.TabIndex = 1;
-            // 
-            // detailsBackgroundPanel
-            // 
-            detailsBackgroundPanel.BackColor = Color.FromArgb(86, 86, 86);
-            detailsBackgroundPanel.Controls.Add(detailsLabel);
-            detailsBackgroundPanel.Location = new Point(2, 2);
-            detailsBackgroundPanel.Name = "detailsBackgroundPanel";
-            detailsBackgroundPanel.Size = new Size(418, 316);
-            detailsBackgroundPanel.TabIndex = 0;
-            // 
-            // detailsLabel
-            // 
-            detailsLabel.AutoSize = true;
-            detailsLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            detailsLabel.Location = new Point(17, 10);
-            detailsLabel.Name = "detailsLabel";
-            detailsLabel.Size = new Size(100, 76);
-            detailsLabel.TabIndex = 0;
-            detailsLabel.Text = "Ability: \r\nTotal Damage: \r\nTotal Hits: \r\nCrit Chance: ";
             // 
             // Form1
             // 
@@ -495,12 +495,12 @@
             statsPanel.ResumeLayout(false);
             statsPanel.PerformLayout();
             simResultsBackgroundPanel.ResumeLayout(false);
-            generalResultsOutlinePanel.ResumeLayout(false);
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
             detailsBorderPanel.ResumeLayout(false);
             detailsBackgroundPanel.ResumeLayout(false);
             detailsBackgroundPanel.PerformLayout();
+            generalResultsOutlinePanel.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -520,8 +520,8 @@
         private Panel simResultsBackgroundPanel;
         private TextBox fightDurationTextBox;
         private Label fightDurationLabel;
-        private TextBox targetCountTextBox;
-        private Label TargetCountLabel;
+        private TextBox simCountTextBox;
+        private Label simCountLabel;
         private Button button1;
         private Panel statsPanelBorder;
         private Panel statsPanel;

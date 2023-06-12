@@ -1,5 +1,6 @@
 using DpsSimApp.Properties;
 using DpsSimulator;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -115,14 +116,28 @@ namespace DpsSimApp
             {
                 return;
             }
+            totalDamageLabel.Text = $"CURRENTLY SIMMING";
+            dpsLabel.Text = $"CURRENTLY SIMMING";
 
             float fightDuration;
+            int simCount;
             if (float.TryParse(fightDurationTextBox.Text, out fightDuration))
             {
+                if (!int.TryParse(simCountTextBox.Text, out simCount))
+                {
+                    return;
+                }
+
                 currentlySimming = true;
+                
+
                 SimuMain simuMain = new SimuMain();
                 CombatLogger simLog = new CombatLogger();
-                simuMain.RunSim(simLog, fightDuration);
+                for (int i = 0; i < simCount; i++)
+                {
+                    simuMain.RunSim(simLog, fightDuration);
+                }
+
 
                 totalDamageLabel.Text = ($"Total damage: {(int)simLog.GetTotalDamage()}");
                 dpsLabel.Text = ($"DPS: {MathF.Round((int)simLog.GetTotalDamage() / fightDuration, 2)}");
@@ -137,6 +152,7 @@ namespace DpsSimApp
                 sortedResults.Sort((pair1, pair2) => pair1.Value.totalAbilityDamage.CompareTo(pair2.Value.totalAbilityDamage));
                 foreach (KeyValuePair<string, AbilityResults> ability in sortedResults)
                 {
+                    ability.Value.AverageResults(simCount);
                     CreateAbilityBar(ability.Key, ability.Value, simLog);
 
                 }
@@ -146,6 +162,8 @@ namespace DpsSimApp
             }
             else
             {
+                totalDamageLabel.Text = $"Total Damage:";
+                dpsLabel.Text = $"DPS:";
                 currentlySimming = false;
             }
 
@@ -194,12 +212,12 @@ namespace DpsSimApp
         {
 
             AbilityResults currentResults = (sender as AbilityBar).barAbiResults;
-            
+
 
             detailsLabel.Text = ($"Ability: {currentResults.abilityName}\n" +
                 $"Total Damage: {(int)currentResults.totalAbilityDamage}\n" +
                 $"Total Hits: {currentResults.abilityHits}\n" +
-                $"Crit Chance: {MathF.Round(((float)currentResults.abilityCrits / (float)currentResults.abilityHits)*100f, 2)}%\n");
+                $"Crit Chance: {MathF.Round(((float)currentResults.abilityCrits / (float)currentResults.abilityHits) * 100f, 2)}%\n");
         }
         private void ClickAbiLabel(Object sender, EventArgs e)
         {
