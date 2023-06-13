@@ -59,6 +59,8 @@
             simResultsBackgroundPanel = new Panel();
             detailsBorderPanel = new Panel();
             detailsBackgroundPanel = new Panel();
+            simProgressLabel = new Label();
+            simProgressBar = new ProgressBar();
             detailsLabel = new Label();
             generalResultsOutlinePanel = new Panel();
             panel1 = new Panel();
@@ -408,11 +410,31 @@
             // detailsBackgroundPanel
             // 
             detailsBackgroundPanel.BackColor = Color.FromArgb(86, 86, 86);
+            detailsBackgroundPanel.Controls.Add(simProgressLabel);
+            detailsBackgroundPanel.Controls.Add(simProgressBar);
             detailsBackgroundPanel.Controls.Add(detailsLabel);
             detailsBackgroundPanel.Location = new Point(2, 2);
             detailsBackgroundPanel.Name = "detailsBackgroundPanel";
             detailsBackgroundPanel.Size = new Size(418, 316);
             detailsBackgroundPanel.TabIndex = 0;
+            // 
+            // simProgressLabel
+            // 
+            simProgressLabel.AutoSize = true;
+            simProgressLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            simProgressLabel.Location = new Point(150, 108);
+            simProgressLabel.Name = "simProgressLabel";
+            simProgressLabel.Size = new Size(117, 19);
+            simProgressLabel.TabIndex = 1;
+            simProgressLabel.Text = "Progress (x/1000)";
+            simProgressLabel.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // simProgressBar
+            // 
+            simProgressBar.Location = new Point(30, 130);
+            simProgressBar.Name = "simProgressBar";
+            simProgressBar.Size = new Size(358, 23);
+            simProgressBar.TabIndex = 0;
             // 
             // detailsLabel
             // 
@@ -420,9 +442,9 @@
             detailsLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             detailsLabel.Location = new Point(17, 10);
             detailsLabel.Name = "detailsLabel";
-            detailsLabel.Size = new Size(100, 76);
+            detailsLabel.Size = new Size(257, 19);
             detailsLabel.TabIndex = 0;
-            detailsLabel.Text = "Ability: \r\nTotal Damage: \r\nTotal Hits: \r\nCrit Chance: ";
+            detailsLabel.Text = "Run sim and select and ability for details.";
             // 
             // generalResultsOutlinePanel
             // 
@@ -550,5 +572,7 @@
         private Panel detailsBackgroundPanel;
         private Label detailsLabel;
         private System.ComponentModel.BackgroundWorker simBackgroundWorker;
+        private ProgressBar simProgressBar;
+        private Label simProgressLabel;
     }
 }
