@@ -1,3 +1,4 @@
+using DpsSimApp;
 using System;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
@@ -47,6 +48,21 @@ namespace DpsSimulator
                     abilityDamages[ability.Key] = ability.Value;
                 }
             }
+        }
+
+        public void AverageDamages(int avgAmount)
+        {
+            foreach (KeyValuePair<string, AbilityResults> ability in abilityDamages)
+            {
+                ability.Value.AverageResults(avgAmount);
+            }
+            totalDamage = totalDamage / avgAmount;
+        }
+
+        public void ResetDamages()
+        {
+            abilityDamages = new Dictionary<string, AbilityResults>();
+            totalDamage = 0f;
         }
     }
 }

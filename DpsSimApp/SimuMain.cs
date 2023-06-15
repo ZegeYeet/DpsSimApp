@@ -6,14 +6,15 @@ namespace DpsSimulator
 {
     class SimuMain
     {
+        public Stats playerStats = new Stats();
+        public Stats enemyStats = new Stats();
 
         public void RunSim(CombatLogger combatLogger, float simDuration)
         {
             Stopwatch simRealTime = new Stopwatch();
             simRealTime.Start();
 
-            Stats playerStats = new Stats();
-            Stats enemyStats = new Stats();
+            
 
             DamageEvents damageEvents = new DamageEvents(combatLogger);
             DotManager dotManager = new DotManager(damageEvents);

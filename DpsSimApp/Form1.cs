@@ -130,35 +130,88 @@ namespace DpsSimApp
                 abiBar.Dispose();
             }
 
-            if (float.TryParse(fightDurationTextBox.Text, out simStruct.fightDuration))
+            if(!ParseTextFields())
             {
-                if (!int.TryParse(simCountTextBox.Text, out simStruct.simCount))
-                {
-                    return;
-                }
-
-                currentlySimming = true;
-                detailsLabel.Hide();
-                simProgressLabel.Show();
-                simProgressBar.Show();
-                simProgressBar.Maximum = (int)(simStruct.simCount * 0.9f);
-                simProgressBar.Value = 0;
-                simProgressLabel.Text = $"Progress ({simProgressBar.Value}/{simStruct.simCount})";
-                detailsLabel.Text = "Select an ability Bar for more info.";
-
-
-
-                this.simBackgroundWorker.RunWorkerAsync(simStruct);
-            }
-            else
-            {
-                totalDamageLabel.Text = $"Incorrect fight duration or sim count";
+                Debug.WriteLine("Text fields invalid");
+                totalDamageLabel.Text = $"Please Check sim text fields";
                 dpsLabel.Text = $"";
-                
                 currentlySimming = false;
+                return;
             }
 
 
+
+            currentlySimming = true;
+            simStruct.simLog.ResetDamages();
+            detailsLabel.Hide();
+            simProgressLabel.Show();
+            simProgressBar.Show();
+            simProgressBar.Maximum = (int)(simStruct.simCount * 0.9f);
+            simProgressBar.Value = 0;
+            simProgressLabel.Text = $"Progress ({simProgressBar.Value}/{simStruct.simCount})";
+            detailsLabel.Text = "Select an ability Bar for more info.";
+
+
+
+            this.simBackgroundWorker.RunWorkerAsync(simStruct);
+
+
+
+            currentlySimming = false;
+
+
+
+        }
+
+        private bool ParseTextFields()
+        {
+            //sim settings
+            if (!float.TryParse(fightDurationTextBox.Text, out simStruct.fightDuration))
+            {
+                return false;
+            }
+
+            if (!int.TryParse(simCountTextBox.Text, out simStruct.simCount))
+            {
+                return false;
+            }
+
+            //stats
+            float simWpnDmg = 0f;
+            float simCrit = 0f;
+            float simHaste = 0f;
+            float simBp = 0f;
+            
+            if (!float.TryParse(WeaponDamageBox.Text, out simWpnDmg))
+            {
+                return false;
+            }
+
+            if (!float.TryParse(CritChanceBox.Text, out simCrit))
+            {
+                return false;
+            }
+
+            if (!float.TryParse(hasteBox.Text, out simHaste))
+            {
+                return false;
+            }
+
+            if (!float.TryParse(brutalPowerBox.Text, out simBp))
+            {
+                return false;
+            }
+
+            simStruct.simuMain.playerStats.ResetExistingStats();
+            simStruct.simuMain.playerStats.UpdateStats("Weapon Damage", simWpnDmg);
+            simStruct.simuMain.playerStats.UpdateStats("Crit Chance", simCrit);
+            simStruct.simuMain.playerStats.UpdateStats("Haste", simHaste);
+            simStruct.simuMain.playerStats.UpdateStats("Brutal Power", simBp);
+
+
+
+
+            return true;
         }
 
         private void SimBackgroundWork(BackgroundWorker sbw, SimStruct bwSimStruct)
@@ -205,11 +258,11 @@ namespace DpsSimApp
 
             
             abiBarList = new List<Panel>();
+            bwSimStruct.simLog.AverageDamages(bwSimStruct.simCount);
             List<KeyValuePair<string, AbilityResults>> sortedResults = bwSimStruct.simLog.GetAbilityDamages().ToList();
             sortedResults.Sort((pair1, pair2) => pair1.Value.totalAbilityDamage.CompareTo(pair2.Value.totalAbilityDamage));
             foreach (KeyValuePair<string, AbilityResults> ability in sortedResults)
             {
-                ability.Value.AverageResults(bwSimStruct.simCount);
                 CreateAbilityBar(ability.Key, ability.Value, bwSimStruct.simLog);
             }
 

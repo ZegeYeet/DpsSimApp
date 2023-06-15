@@ -1,3 +1,4 @@
+using DpsSimApp;
 using System;
 
 
@@ -17,12 +18,12 @@ namespace DpsSimulator
 
         void SetUpInitialStats()
         {
-            statsDict.Add("Weapon Damage", 14f);
-            statsDict.Add("Crit Chance", 0.01f);
-            statsDict.Add("Haste", 0.1f);
-            statsDict.Add("Brutal Power", 63.8f);
-            statsDict.Add("Dextrous Power", 34f);
-            statsDict.Add("Spell Power", 6f);
+            statsDict.Add("Weapon Damage", 0f);
+            statsDict.Add("Crit Chance", 0f);
+            statsDict.Add("Haste", 0f);
+            statsDict.Add("Brutal Power", 0f);
+            statsDict.Add("Dextrous Power", 0f);
+            statsDict.Add("Spell Power", 0f);
             statsDict.Add("Attack Power Multiplier", 1.2f);
 
             statsDict.Add("Physical Armor", 0f);
@@ -52,7 +53,23 @@ namespace DpsSimulator
             return 0f;
         }
 
+        public void ResetExistingStats()
+        {
+            statsDict["Weapon Damage"] = 0f;
+            statsDict["Crit Chance"] = 0f;
+            statsDict["Haste"] = 0f;
+            statsDict["Brutal Power"] = 0f;
+            statsDict["Dextrous Power"] = 0f;
+            statsDict["Spell Power"] = 0f;
+            statsDict["Attack Power Multiplier"] = 1.2f;
 
+            statsDict["Physical Armor"] = 0f;
+            statsDict["Spell Armor"] = 0f;
+            statsDict["Physical Armor Multiplier"] = 1f;
+            statsDict["Spell Armor Multiplier"] = 1f;
+            statsDict["Health Percent"] = 100f;
+            statsDict["Crit Defense"] = 0f;//reduces chance of being critically struck
+        }
 
     }
 }
