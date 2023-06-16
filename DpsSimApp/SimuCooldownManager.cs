@@ -26,7 +26,16 @@ namespace DpsSimulator
 
         public void ReduceCooldowns(float baseCooldownTime)
         {
-            float effectiveCDTime = baseCooldownTime * (1 + stats.GetStatValue("Haste"));
+            float effectiveCDTime;
+            if (stats.GetStatValue("Haste") > 0.95f)
+            {
+                effectiveCDTime = baseCooldownTime * (1 + 0.95f);
+            }
+            else
+            {
+                effectiveCDTime = baseCooldownTime * (1 + stats.GetStatValue("Haste"));
+            }
+
             List<int> removeCDsList = new List<int>();
             var cdSpan = CollectionsMarshal.AsSpan(abilityCooldowns);
             for(int i = cdSpan.Length-1; i >= 0; i--)
